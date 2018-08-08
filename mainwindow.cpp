@@ -1,4 +1,8 @@
 #include "mainwindow.h"
+//#include "../../home/pi/libmodbus/src/modbus.h"
+//#include "../../home/pi/libmodbus/src/modbus-private.h"
+#include <errno.h>
+#include <stdlib.h>
 
 MainWindow::MainWindow(QMainWindow *parent) :
     QMainWindow(parent),
@@ -18,7 +22,17 @@ MainWindow::MainWindow(QMainWindow *parent) :
   QGridLayout *layout = new QGridLayout;
   layout->addWidget(widget, 0, 0);
   connect(timer_1, SIGNAL(timeout()), widget, SLOT(animate()));
+/*
+  modbus_t *ctx;
+  ctx = modbus_new_tcp("192.168.178.22", 502);
+  modbus_set_debug(ctx, TRUE);
 
+  if (modbus_connect(ctx) == -1) {
+      fprintf(stderr, "Connection failed: %s\n",
+              modbus_strerror(errno));
+      modbus_free(ctx);
+    }
+*/
 }
 
 MainWindow::~MainWindow()

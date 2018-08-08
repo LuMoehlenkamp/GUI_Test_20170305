@@ -41,6 +41,10 @@ QxmlTest::QxmlTest()
         qDebug() << xmlStreamReader.readElementText();
         }
 
+      if(xmlStreamReader.name() == "value"){
+          qDebug() << xmlStreamReader.readElementText();
+        }
+
       }
     }
 
