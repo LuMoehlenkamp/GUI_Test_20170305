@@ -15,13 +15,15 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     GPIO_class.cpp \
     PaintHelper.cpp \
     Widget.cpp \
     ClockApi.cpp \
     QxmlTest.cpp
-LIBS += -lwiringPi
+
+LIBS += -lwiringPi \
+    -lmodbus
 
 HEADERS  += mainwindow.h \
     GPIO_class.h \
@@ -32,5 +34,4 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-OTHER_FILES += \
-    xmlTest.xml
+OTHER_FILES += xmlTest.xml

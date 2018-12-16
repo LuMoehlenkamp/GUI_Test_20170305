@@ -1,13 +1,13 @@
 #include "mainwindow.h"
-//#include "../../home/pi/libmodbus/src/modbus.h"
-//#include "../../home/pi/libmodbus/src/modbus-private.h"
+
 #include <errno.h>
 #include <stdlib.h>
 
 MainWindow::MainWindow(QMainWindow *parent) :
-    QMainWindow(parent),
-    count(0)
-    // clockApi(this)
+    QMainWindow(parent)
+    , count(0)
+    , modResult(0)
+    , storage({u_int16_t(0)})
 {
   setupUi(this);
   QTimer *timer_1 = new QTimer(this);
@@ -22,17 +22,19 @@ MainWindow::MainWindow(QMainWindow *parent) :
   QGridLayout *layout = new QGridLayout;
   layout->addWidget(widget, 0, 0);
   connect(timer_1, SIGNAL(timeout()), widget, SLOT(animate()));
-/*
-  modbus_t *ctx;
-  ctx = modbus_new_tcp("192.168.178.22", 502);
-  modbus_set_debug(ctx, TRUE);
 
+  // MODBUS stuff
+  ctx = MODBUS_API::modbus_new_tcp("192.168.178.22", 502);
   if (modbus_connect(ctx) == -1) {
       fprintf(stderr, "Connection failed: %s\n",
               modbus_strerror(errno));
       modbus_free(ctx);
     }
-*/
+  else {
+      modResult = modbus_write_register(ctx,0x4000, storage[0]);
+      qDebug() << storage[0];
+    }
+  // END MODBUS stuff
 }
 
 MainWindow::~MainWindow()
@@ -45,8 +47,10 @@ void MainWindow::TimerSlot()
   Increment(count);
   int a = count % 2;
   digitalWrite(5,a);
-
- }
+  // MODBUS
+  modResult = modbus_read_registers(ctx,0x4000,1,&storage[0]);
+  qDebug() << storage[0];
+}
 
 void MainWindow::Increment(int& a)
 {

@@ -14,9 +14,8 @@
 #include "PaintHelper.h"
 #include "Widget.h"
 #include "XmlReader.h"
-#include "ClockApi.h"
-
 #include "QxmlTest.h"
+#include "modbus/modbus-tcp.h"
 
 namespace Ui
 {
@@ -29,19 +28,17 @@ class MainWindow : public QMainWindow, public Ui::MainWindow{
   int WiringPiSetupRes;
   int PinExportRes;
   Ui::MainWindow *ui;
-
   GPIO_class GPIO_1;
-  void Increment(int& a);
-
   PaintHelper paintHelper;
-  // ClockApi clockApi;
-
   QxmlTest xmlTest;
+  modbus_t *ctx;
+  int modResult;
+  void Increment(int& a);
+  u_int16_t storage [8];
 
 public:
   MainWindow(QMainWindow *parent = 0);
   ~MainWindow();
-
 
 private slots:
   void TimerSlot();
